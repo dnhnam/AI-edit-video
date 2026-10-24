@@ -1,0 +1,5 @@
+anthropic>=2.3.0
+pydantic>=2
+# Tùy chọn: chạy ASR local cho transcribe.py
+# faster-whisper>=1.1
+# Chạy test: pytest

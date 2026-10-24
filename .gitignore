@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# Media và file làm việc không đưa lên git
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+work/
+out/
+raw/
