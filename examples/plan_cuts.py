@@ -51,13 +51,13 @@ class CutPlan(BaseModel):
     warnings: list[str]
 
 
-def plan_to_segments(plan: CutPlan, phrases: list[Phrase], duration: float,
+def plan_to_segments(keep: list[KeepRange], phrases: list[Phrase], duration: float,
                      pad_before: float = 0.08, pad_after: float = 0.15) -> tuple[list[dict], list[str]]:
     """Đổi dải ID thành đoạn thời gian; kiểm tra và gộp các dải liền kề."""
     by_id = {p.id: p for p in phrases}
     warnings: list[str] = []
     ranges: list[KeepRange] = []
-    for r in plan.keep:
+    for r in keep:
         if r.first_id not in by_id or r.last_id not in by_id or r.first_id > r.last_id:
             warnings.append(f"Bỏ dải không hợp lệ P{r.first_id:04d}–P{r.last_id:04d}")
             continue
@@ -120,7 +120,7 @@ def main() -> None:
     from claude_helper import ask_structured  # import muộn để --dry-run không cần SDK
 
     plan = ask_structured(SYSTEM, user_text, CutPlan, effort=args.effort)
-    segments, warnings = plan_to_segments(plan, phrases, duration)
+    segments, warnings = plan_to_segments(plan.keep, phrases, duration)
     total = sum(s["end"] - s["start"] for s in segments)
 
     edl = {

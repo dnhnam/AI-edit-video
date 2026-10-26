@@ -49,19 +49,25 @@ làm tốt.
 | Video tạo sinh | Runway, Veo, Firefly Video | Tạo cảnh, kéo dài clip, hiệu ứng | Khó giữ nhất quán nhân vật, chữ và tay; thường phải sửa lại thủ công |
 | Agent + code | Claude Code + ffmpeg (ví dụ dự án mã nguồn mở [video-use](https://github.com/browser-use/video-use)); Remotion + Agent Skills | Linh hoạt tuyệt đối, tái lập được, chạy hàng loạt | Cần quen dòng lệnh; vẫn phải duyệt kết quả |
 | Claude điều khiển NLE qua MCP | DaVinci Resolve 21.1 Studio (MCP tích hợp sẵn); MCP cộng đồng cho Resolve, Premiere, After Effects, ffmpeg; connector "Adobe for creativity" | Ra lệnh bằng ngôn ngữ tự nhiên ngay trên project thật | MCP gốc của Resolve chỉ có ở bản Studio (trả phí); server cộng đồng chưa được kiểm định |
+| Phần mềm dựng mã nguồn mở có MCP | [Concat](https://github.com/jub0t/concat) (thay CapCut; Windows, macOS, Linux, Android) | Miễn phí, chạy offline, MCP có sẵn (`concat --mcp`): Claude dựng timeline, thêm phụ đề, keyframe, hiệu ứng, xem khung hình và xuất file; sau đó người chỉnh tiếp trên giao diện | Còn beta (0.2.x); giấy phép AGPL-3.0; mỗi đoạn cắt cần vài lượt gọi công cụ; Whisper trong app không gọi được qua MCP |
+| Kho stock và video AI cho B-roll | Pexels (miễn phí, có API); Magnific, tên mới của Freepik (stock và các model video, có MCP) | Tìm cảnh minh hoạ tự động theo từ khoá Claude đề xuất | Đọc kỹ giấy phép; Magnific cần gói trả phí cho MCP; video AI tốn credit và cần gắn nhãn |
 
 Một số mốc đáng chú ý:
 
+- **4/2026:** [video-use](https://github.com/browser-use/video-use) (giấy phép MIT) ra mắt:
+  thả footage vào thư mục, chat với Claude Code, nhận về `final.mp4`. Dự án này thể hiện rõ
+  cách làm "transcript trước, hình ảnh khi cần".
 - **28/4/2026:** Anthropic ra mắt 9 connector cho công việc sáng tạo (Adobe, Blender, Ableton,
   Autodesk Fusion, Splice, SketchUp, Affinity by Canva, Resolume...). Connector "Adobe for
   creativity" nối Claude với hơn 50 công cụ của Adobe, trong đó có Premiere và Express, phục
   vụ các việc như đổi kích thước video cho YouTube Shorts.
+- **28/4/2026:** Freepik đổi tên thành **Magnific**, gộp kho stock với công cụ tạo ảnh, video
+  và upscale; MCP server chính thức tại `https://mcp.magnific.com`.
 - **9/2026:** DaVinci Resolve 21.1 thêm máy chủ MCP tích hợp để Claude, Claude Code và Codex
   sắp xếp media, dựng highlight từ video dài, bỏ clip thừa và render hàng loạt bằng lệnh tự
   nhiên. Tính năng này chỉ có ở bản Studio, thiết lập qua *File > Setup AI Assistants*.
-- **4/2026:** [video-use](https://github.com/browser-use/video-use) (giấy phép MIT) ra mắt:
-  thả footage vào thư mục, chat với Claude Code, nhận về `final.mp4`. Dự án này thể hiện rõ
-  cách làm "transcript trước, hình ảnh khi cần".
+- **10/2026:** [Concat](https://github.com/jub0t/concat), phần mềm dựng mã nguồn mở thay CapCut,
+  đang ở bản beta 0.2.x, có MCP server tích hợp để Claude Code điều khiển.
 
 ---
 
@@ -220,6 +226,10 @@ chỉ thử với 8 người. Hãy tự đo trên chính dự án của bạn.
 - [a1adams/mcp-servers-for-video-editing](https://github.com/a1adams/mcp-servers-for-video-editing): bảng so sánh MCP cho Resolve, Premiere, After Effects, ffmpeg, Descript (cập nhật 6/10/2026)
 - CineD — [DaVinci Resolve 21.1: AI assistant integration via MCP](https://www.cined.com/es/davinci-resolve-21-1-released-ai-assistant-integration-via-mcp-individual-hdr-trims-and-python-scripting-moves-to-studio/); Digital Production — [Resolve 21.1 Adds MCP](https://digitalproduction.com/2026/09/08/resolve-21-1-adds-mcp-and-finally-gets-presets/); [Motion Media — Resolve 21.1](https://www.motionmedia.com/mm-blog/davinci-resolve-21-1-update-new-features)
 - [weandthecolor — Adobe for creativity connector trong Claude](https://weandthecolor.com/how-does-the-adobe-for-creativity-connector-work-in-claude/210357); [NYU Shanghai RITS — 9 connector sáng tạo](https://rits.shanghai.nyu.edu/ai/anthropic-plugs-claude-into-adobe-blender-and-ableton-with-nine-new-connectors/)
+- [jub0t/concat](https://github.com/jub0t/concat) và tài liệu MCP của dự án (`docs/MCP.md`): công cụ MCP, chế độ window/headless, giới hạn thư mục
+- [The Next Web — Freepik rebrands as Magnific](https://thenextweb.com/news/freepik-rebrands-as-magnific); [Magnific MCP](https://www.magnific.com/mcp); [Magnific API docs — MCP](https://docs.magnific.com/modelcontextprotocol)
+- [Pexels API](https://www.pexels.com/api/documentation/); [pexels/pexels-javascript](https://github.com/pexels/pexels-javascript) (client chính thức, dùng để đối chiếu trường dữ liệu video)
+- [Claude Code — Advanced setup (Windows)](https://code.claude.com/docs/en/setup); [Claude Code — MCP](https://code.claude.com/docs/en/mcp)
 - [Tella — Remotion Agent Skills với Claude Code](https://www.tella.com/blog/how-to-use-remotion-agent-skills-with-claude-code); [OpenReplay — Making videos with Claude Code + Remotion](https://blog.openreplay.com/making-videos-claude-code-remotion/)
 - Wang et al. — [LAVE: LLM-Powered Agent Assistance and Language Augmentation for Video Editing](https://arxiv.org/abs/2402.10294) (IUI 2024)
 - [Prompt-Driven Agentic Video Editing System](https://arxiv.org/pdf/2509.16811) (arXiv 2025)

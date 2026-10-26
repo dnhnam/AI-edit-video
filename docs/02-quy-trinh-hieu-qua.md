@@ -104,6 +104,8 @@ Video ít lời (du lịch, sự kiện, B-roll): đổi bước 2–4 thành *s
 | Podcast, phỏng vấn, bài giảng | Transcript trước: Descript, video-use, hoặc pipeline trong repo này | Lời nói mang nội dung; cắt theo câu là chính |
 | Video dài → nhiều clip ngắn | OpusClip/CapCut cho nhanh; Claude + script nếu cần kiểm soát gu và brief | Công cụ chuyên dụng nhanh; Claude chọn đoạn "đúng ý" hơn khi có brief kỹ |
 | Highlight sự kiện trên project có sẵn | DaVinci Resolve 21.1 Studio + Claude qua MCP | Thao tác trực tiếp trên timeline, bin và render queue |
+| AI dựng thô rồi người chỉnh tay, không tốn phí phần mềm | Claude Code + Concat qua MCP ([Phần 4](04-use-case-windows-claude-code.md#use-case-1--dựng-với-concat)) | Ra project sửa được thay vì file video đã render; miễn phí, chạy offline |
+| Nhiều short dọc từ podcast hoặc livestream | `plan_shorts.py` + `render_edl.py --aspect 9:16` ([Phần 4](04-use-case-windows-claude-code.md#use-case-3--từ-video-dài-ra-nhiều-short)) | Claude chọn đoạn có hook và tự đứng được; render hàng loạt |
 | Motion graphics, video giải thích, biểu đồ động, intro/outro | Claude Code + Remotion (Agent Skills) | Video là code React: chính xác, sửa được, tái sử dụng |
 | Đổi kích thước, phiên bản cho mạng xã hội | Connector Adobe for creativity, CapCut, hoặc ffmpeg | Việc lặp lại, ít cần sáng tạo |
 | Phim, quảng cáo cao cấp | Người dựng trên NLE; AI chỉ chép lời, ghi log, tìm cảnh, làm phụ đề | Gu và nhịp là giá trị chính |

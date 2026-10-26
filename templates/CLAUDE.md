@@ -49,5 +49,16 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 ## Công cụ có sẵn
 
 - `ffmpeg`, `ffprobe`
-- Script trong `examples/` của repo AI-edit-video: `transcribe.py`, `plan_cuts.py`,
-  `render_edl.py`, `review_cuts.py`, `shot_log.py`, `translate_srt.py`
+- Script trong `examples/` của repo AI-edit-video (đọc `--help` trước khi dùng):
+  `transcribe.py`, `plan_cuts.py`, `plan_shorts.py`, `broll.py`, `render_edl.py`,
+  `review_cuts.py`, `shot_log.py`, `translate_srt.py`
+- Python của venv: `<đường dẫn>\AI-edit-video\examples\.venv\Scripts\python.exe` (Windows)
+- MCP (nếu đã thêm): `concat` để dựng trên timeline Concat; `magnific` để tìm stock hoặc tạo
+  video AI. Với Magnific: luôn chạy `simulate_cost` và hỏi tôi trước khi dùng công cụ tốn credit.
+
+## Windows
+
+- Dùng đường dẫn kiểu `raw\talk.mp4`; trong PowerShell, đặt đường dẫn có dấu cách trong ngoặc kép.
+- Concat chỉ ghi file trong `C:\Users\<tôi>\...`; dự án này phải nằm trong thư mục đó.
+- Project Concat đang mở trên cửa sổ thì không ghi vào được: nhắc tôi đóng nó, hoặc dùng chế
+  độ Automation.

@@ -14,6 +14,10 @@ qua Claude API → Claude điều khiển phần mềm dựng qua MCP.
 | 7 | Motion graphics bằng code | Claude Code + Remotion | Node.js |
 | 8 | Điều khiển DaVinci Resolve / Premiere / Adobe | Claude + MCP / connector | Resolve Studio 21.1, hoặc server cộng đồng |
 | 9 | Dự án mã nguồn mở video-use | Claude Code | ffmpeg, key ElevenLabs |
+| 10 | Concat: phần mềm dựng mã nguồn mở có MCP | Claude Code + Concat | Concat (Windows, macOS, Linux, Android) |
+
+Các use case chi tiết trên Windows (Concat, video short, video dài ra nhiều short, B-roll từ
+Pexels hoặc Magnific) nằm ở [Phần 4](04-use-case-windows-claude-code.md).
 
 ---
 
@@ -319,6 +323,69 @@ trước khi render, và chỉ cài server từ nguồn bạn tin tưởng.
 
 Repo này dùng lại cùng triết lý "văn bản trước, hình ảnh khi cần" và "hỏi → xác nhận → làm
 → tự kiểm tra", nhưng viết gọn để dễ đọc và sửa.
+
+---
+
+## Ví dụ 10 — Concat: phần mềm dựng mã nguồn mở có MCP
+
+[Concat](https://github.com/jub0t/concat) là phần mềm dựng video mã nguồn mở thay thế
+CapCut, viết bằng Rust, chạy trên Windows, macOS, Linux và Android (giấy phép AGPL-3.0, bản
+beta 0.2.x tại thời điểm viết). Mọi thứ chạy trên máy: phụ đề tự động bằng Whisper, đọc chữ
+thành giọng nói, tách nền, keyframe, khoảng 100 hiệu ứng, xuất tối đa 4K (H.264, HEVC, AV1),
+không watermark, không cần tài khoản.
+
+Điểm khiến Concat hợp với pipeline của repo này: **MCP server có sẵn** (`concat --mcp`).
+Claude Code điều khiển được Concat bằng chính các lệnh dựng mà giao diện dùng. So với MCP của
+DaVinci Resolve 21.1 (chỉ có ở bản Studio trả phí), Concat miễn phí và mở mã.
+
+**Cài cho Claude Code trên Windows** (PowerShell):
+
+```powershell
+claude mcp add --scope project concat -- "$env:LOCALAPPDATA\Programs\Concat\concat.exe" --mcp
+# Cài bằng .msi hoặc cho mọi người: "C:\Program Files\Concat\concat.exe"
+```
+
+**Hai chế độ chạy:**
+
+- `headless` (mặc định khi Concat đóng): MCP tự chạy engine của Concat, không cần mở cửa sổ.
+- `window`: bật **Settings > Automation > Scripts and apps** trong Concat; agent đi qua cửa
+  sổ đang mở và không thể ghi đè project bạn đang xem.
+
+**Các nhóm công cụ** (theo tài liệu `docs/MCP.md` của Concat):
+
+| Nhóm | Công cụ |
+|---|---|
+| Project | `project_create`, `project_open`, `project_save`, `project_close`, `project_set_video` |
+| Đọc | `timeline_read` (gọn: lane, clip, id), `project_get` (đầy đủ), `concat_version` |
+| Media | `media_probe`, `media_import` |
+| Dựng | `clip_add`, `clips_add_sequence`, `clip_trim`, `clips_split`, `clips_move`, `clips_remove`, `clip_update`, `clip_transform`, `clip_speed`, `clip_frame`, `track_add` |
+| Hình ảnh | `clip_mask`, `clip_stabilize`, `timeline_background` |
+| Chữ | `title_add`, `captions_add` (danh sách `{start, end, text}`) |
+| Keyframe, hiệu ứng | `keyframe_set`, `keyframe_clear`, `effects_list`, `effect_layer_add`, `effect_key_set` |
+| Khác | `edit_apply` (mọi lệnh dựng, hoặc một batch thành một bước undo), `edit_undo`, `edit_redo`, `template_list`, `template_instantiate` |
+| Xuất | `export_start`, `export_status`, `export_wait`, `export_cancel` |
+| Nhìn | `preview_frame` (khung hình đã ghép hoàn chỉnh, kèm chữ và hiệu ứng) |
+
+**Vị trí trong pipeline:**
+
+| Bước | Dùng gì |
+|---|---|
+| Chép lời có mốc thời gian từng từ | `transcribe.py`. Whisper của Concat chỉ tạo phụ đề trong giao diện và không gọi được qua MCP |
+| Claude lên kế hoạch cắt | `plan_cuts.py` / `plan_shorts.py` |
+| Dựng thành timeline sửa được | **Concat** (`clip_add` + `clip_trim` cho từng đoạn của EDL) |
+| Phụ đề | File `.srt` từ `render_edl.py` → `captions_add`, thành chữ sửa được trên timeline |
+| Soát điểm cắt, che jump cut | `preview_frame`, rồi `clip_transform` / `keyframe_set` |
+| Hoàn thiện (nhạc, màu, chuyển cảnh) | Bạn, trên giao diện Concat |
+
+**Hạn chế:**
+
+- Còn beta: API có thể đổi giữa các phiên bản.
+- Không có lệnh "lấy đoạn từ giây A đến giây B": mỗi đoạn cần `clip_add` rồi `clip_trim`, nên
+  EDL nhiều đoạn sẽ tốn nhiều lượt gọi hơn một lệnh ffmpeg.
+- Agent chỉ sửa project của chính nó, không sửa project đang mở trên cửa sổ.
+- Mặc định chỉ ghi file trong thư mục người dùng (đặt `CONCAT_MCP_ROOTS` để mở rộng).
+
+Hướng dẫn từng bước: [Phần 4 — Use case 1](04-use-case-windows-claude-code.md#use-case-1--dựng-với-concat).
 
 ---
 
