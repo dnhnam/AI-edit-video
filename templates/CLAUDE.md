@@ -62,3 +62,12 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 - Concat chỉ ghi file trong `C:\Users\<tôi>\...`; dự án này phải nằm trong thư mục đó.
 - Project Concat đang mở trên cửa sổ thì không ghi vào được: nhắc tôi đóng nó, hoặc dùng chế
   độ Automation.
+
+## Concat
+
+- Gọi `concat_version` trước tiên để biết phiên bản và các công cụ có sẵn.
+- Dựng lane chính (các đoạn của EDL) xong rồi mới thêm phụ đề, chữ và B-roll.
+- Chỉ dùng font đủ dấu tiếng Việt: Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton,
+  Bangers, Lobster, Pacifico, Black Ops One. Luôn ghi rõ `fontFamily` khi gọi `title_add`.
+- Video `.ts` / `.mpg`: chuyển sang mp4 (`ffmpeg -i in.ts -c copy in.mp4`) trước khi import.
+- Xong việc: `project_save` rồi `project_close`, để tôi mở được project trong Concat.

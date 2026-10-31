@@ -14,6 +14,30 @@ Bạn có thể tự gõ lệnh, hoặc **giao cho Claude Code chạy** bằng c
 Cách thứ hai là cách nên dùng: Claude Code chạy lệnh, đọc kết quả, sửa lỗi và dừng lại chờ
 bạn duyệt ở mỗi bước quan trọng.
 
+**Từ phiên Claude Code trên cloud sang máy của bạn:** clone repo (mục 0.2), đăng nhập Claude
+Code bằng tài khoản claude.ai (`claude auth login`, không dùng API key), rồi chạy
+`claude --teleport` trong thư mục repo và chọn phiên cần tiếp tục. Claude Code tự lấy nhánh
+của phiên về và nạp lại hội thoại. Thư mục phải sạch (không có thay đổi chưa commit). Để dựng
+video, mở một phiên mới trong thư mục dự án video (mục 0.4); repo này chỉ là bộ công cụ.
+
+### Ghi chú phiên bản Concat (kiểm tra ngày 31/10/2026)
+
+Bản phát hành mới nhất là **v0.2.8 (18/10/2026)**; nhánh chính đã có thêm khoảng 170 commit
+chưa phát hành. Với v0.2.8:
+
+- `title_add` không ghi font sẽ dùng một font không có sẵn (Inspector báo FONT NOT FOUND):
+  luôn ghi rõ `fontFamily`. `captions_add` mặc định đã dùng Hanken Grotesk, đủ dấu tiếng Việt.
+- Font đủ dấu tiếng Việt trong bộ đi kèm: Hanken Grotesk, Inter, Montserrat, Space Grotesk,
+  Anton, Bangers, Lobster, Pacifico, Black Ops One. Nhiều font khác (Bebas Neue, Archivo
+  Black, Permanent Marker, Staatliches...) thiếu chữ ơ, ư, ạ, ắ...
+- File `.ts` / `.mpg` có thể bị trễ tiếng ở đầu đoạn cắt. Chuyển sang mp4 trước khi import:
+  `ffmpeg -i in.ts -c copy in.mp4`.
+- Trên Windows, hiệu ứng "halation" (và thẻ "corona" trong thư viện) có thể lỗi GPU: tránh
+  dùng cho đến bản sau.
+- Chưa có "linkage": cắt kiểu ripple ở lane chính không kéo phụ đề và B-roll theo. Khi
+  dựng, đặt lane chính xong rồi mới thêm phụ đề và B-roll. Bản sau sẽ có `timeline_linkage`
+  (mặc định bật) và `title_style_words` (tô màu, in đậm vài chữ trong phụ đề).
+
 ---
 
 ## 0. Chuẩn bị một lần
