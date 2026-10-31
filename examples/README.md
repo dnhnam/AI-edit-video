@@ -7,6 +7,7 @@
 | `plan_shorts.py` | Claude chọn nhiều short (có hook, tự đứng được) từ một video dài, mỗi short một EDL | Có (văn bản) |
 | `broll.py` | `plan`: Claude chọn ô B-roll; `pexels`: tìm trên Pexels, Claude xem ảnh để chọn, tải về; `add`: thêm file tự có (Magnific...) | Có (văn bản + ảnh) |
 | `render_edl.py` | Render EDL bằng ffmpeg: fade âm tại điểm cắt, phụ đề khớp timeline mới, khung 9:16/1:1, phụ đề kiểu Shorts, chữ hook, phủ B-roll, preview | Không |
+| `edl_to_concat.py` | Dựng project Concat từ một hoặc nhiều EDL (mỗi EDL một tab): lane chính, B-roll, phụ đề, hook; đọc lại timeline để kiểm tra | Không (gọi Concat qua MCP) |
 | `review_cuts.py` | Claude soát khung trước/sau mỗi điểm cắt, gợi ý punch-in hoặc b-roll | Có (ảnh) |
 | `shot_log.py` | Claude lập shot log, chương YouTube, thumbnail từ khung hình mẫu | Có (ảnh + văn bản) |
 | `translate_srt.py` | Dịch hoặc biên tập phụ đề, giữ nguyên mốc thời gian | Có (văn bản) |

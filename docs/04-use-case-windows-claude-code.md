@@ -190,23 +190,28 @@ Video nguồn: raw\talk.mp4. Brief: bản YouTube khoảng 3 phút cho chủ sho
 
 ### Bước 2 — Dựng project Concat từ EDL
 
-```text
-Dùng MCP concat:
-1. Tạo project "talk_v01" trong thư mục work\, khung 1920x1080, 30 fps.
-2. Import raw\talk.mp4.
-3. Với từng đoạn trong work\talk.edl.json, theo đúng thứ tự: đặt clip nối tiếp nhau trên
-   cùng một lane, cắt đầu/cuối cho khớp start/end của đoạn (clip_add rồi clip_trim), không
-   để khoảng trống. Thêm fade âm 0.03 giây ở hai đầu mỗi clip.
-4. Đọc out\talk_v01_preview.srt và thêm toàn bộ phụ đề bằng captions_add.
-5. Gọi timeline_read để kiểm tra tổng thời lượng khớp với estimated_duration trong EDL.
-6. Dùng preview_frame xem khung hình ngay trước và sau từng điểm cắt; điểm nào là jump cut
-   rõ thì phóng to clip phía sau lên 112% bằng clip_transform.
-7. project_save, rồi báo tôi đường dẫn project và danh sách điểm cắt cần nghe lại.
+**Cách nên dùng: script `edl_to_concat.py`** (không tốn token, kết quả giống nhau mỗi lần):
+
+```powershell
+& $py "$ex\edl_to_concat.py" work\talk.edl.json --name talk_v01 --dry-run   # xem kế hoạch
+& $py "$ex\edl_to_concat.py" work\talk.edl.json --name talk_v01 --hook
 ```
 
-Claude Code sẽ tự gọi `project_create`, `media_import`, `clip_add`, `clip_trim`,
-`captions_add`, `timeline_read`, `preview_frame`, `clip_transform`, `project_save`. Bạn chỉ
-cần duyệt khi được hỏi.
+Script tự chạy Concat ở chế độ không giao diện, tạo `work\talk_v01`, dựng lane chính (các
+đoạn nối liền, fade âm ở mỗi điểm cắt), lane B-roll, lane phụ đề, lane hook, rồi đọc lại
+timeline để so với EDL và in `[OK]` hoặc `CẦN KIỂM TRA` cho từng tab. Concat phải đang đóng
+project này. Chi tiết và đánh giá: [Phần 5](05-danh-gia-claude-code-concat.md).
+
+**Sau đó, nhờ Claude Code soát và sửa nhỏ qua MCP:**
+
+```text
+Mở project work\talk_v01 bằng MCP concat. Dùng preview_frame xem khung hình ngay trước và
+sau từng điểm cắt trên lane chính; điểm nào là jump cut rõ thì phóng to clip phía sau lên
+112% bằng clip_transform. Lưu và đóng project, rồi báo tôi danh sách điểm cắt cần nghe lại.
+```
+
+Cách khác là để Claude Code tự dựng từng bước bằng các công cụ MCP (`clip_add`, `clip_trim`,
+`captions_add`...). Cách này linh hoạt nhưng tốn nhiều lượt gọi và token hơn với EDL dài.
 
 ### Bước 3 — Bạn hoàn thiện trong Concat
 
@@ -366,8 +371,9 @@ Từ raw\podcast.mp4, làm 8 short 25–55 giây cho TikTok/Reels (brief: ...).
 - Podcast nhiều người nói: hỏi ý kiến khách mời trước khi cắt lời của họ thành short riêng.
 - Chi phí một lần `plan_shorts.py` cho podcast 1 giờ (Opus 5.5, effort high) thường dưới 1 USD;
   script in số token sau mỗi lần gọi để bạn theo dõi.
-- Render hàng loạt bằng ffmpeg nhanh hơn. Chỉ đưa 1–2 short tốt nhất vào Concat để trau chuốt
-  thêm (nhạc, hiệu ứng).
+- Muốn duyệt tất cả short trong Concat: `edl_to_concat.py "shorts\*.edl.json" --name podcast_shorts
+  --aspect 9:16 --hook` tạo một project, mỗi short một tab. Render hàng loạt bằng ffmpeg
+  (`render_edl.py`) vẫn nhanh hơn nếu không cần chỉnh tay.
 
 ---
 

@@ -1,5 +1,6 @@
 """Kiểm thử offline (không gọi Claude): python -m pytest tests/"""
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -112,6 +113,44 @@ def test_render_vertical_with_broll(tmp_path):
     wh = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v", "-show_entries", "stream=width,height",
                          "-of", "csv=p=0", str(out)], capture_output=True, text=True, check=True).stdout.strip()
     assert wh == "540,960"
+
+
+def test_concat_plan_math():
+    from edl_to_concat import focus_offset, rate_fraction, trims_for
+    assert trims_for([{"start": 2.0, "end": 5.0}, {"start": 0.5, "end": 60.0}], 60.0) == [(2.0, -55.0), (0.5, 0.0)]
+    assert focus_offset(1920, 1080, 1080, 1920, 0.5) == 0.0
+    assert focus_offset(1920, 1080, 1080, 1920, 0.4) == pytest.approx(0.216, abs=1e-3)
+    assert focus_offset(1080, 1920, 1080, 1920, 0.2) == 0.0
+    assert rate_fraction(29.97) == (30000, 1001) and rate_fraction(25.0) == (25, 1) and rate_fraction(None) == (30, 1)
+
+
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="cần ffmpeg")
+def test_edl_to_concat_against_fake_server(tmp_path):
+    """Chạy toàn bộ edl_to_concat.py với server MCP giả lập (tests/fake_concat_mcp.py)."""
+    src, clip = tmp_path / "talk.mp4", tmp_path / "broll.mp4"
+    for path, spec in [(src, "testsrc=size=640x360:rate=25:duration=20"), (clip, "smptebars=size=640x360:rate=25:duration=6")]:
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", spec, "-f", "lavfi", "-i",
+                        "sine=duration=20", "-shortest", "-c:v", "libx264", str(path)], check=True)
+    words = [{"start": 0.5 + i * 0.5, "end": 0.9 + i * 0.5, "text": f"từ{i}."[: 4 + (i % 2)]} for i in range(36)]
+    (tmp_path / "talk.transcript.json").write_text(json.dumps({"source": str(src), "duration": 20, "words": words}))
+    edl = {"source": str(src), "transcript": str(tmp_path / "talk.transcript.json"), "title": "Thử", "hook": "Hook",
+           "segments": [{"start": 12.0, "end": 15.0}, {"start": 2.0, "end": 8.0}],
+           "broll": [{"start": 4.0, "duration": 2.0, "file": "broll.mp4", "source_start": 1.0}]}
+    (tmp_path / "a.edl.json").write_text(json.dumps(edl, ensure_ascii=False))
+    env = {**os.environ, "CONCAT_MCP_COMMAND": f"{sys.executable} {Path(__file__).with_name('fake_concat_mcp.py')}"}
+    subprocess.run([sys.executable, str(Path(__file__).resolve().parents[1] / "examples" / "edl_to_concat.py"),
+                    str(tmp_path / "a.edl.json"), "--name", "proj", "--aspect", "9:16", "--hook", "--focus", "0.4"],
+                   check=True, env=env)
+    tl = json.loads((tmp_path / "proj" / "fake-project.json").read_text(encoding="utf-8"))["timelines"][0]
+    assert tl["name"] == "01 Thử" and (tl["video"]["width"], tl["video"]["height"]) == (1080, 1920)
+    main = sorted((c for c in tl["clips"] if c["track"] == tl["tracks"][0]), key=lambda c: c["start"])
+    assert [(c["start"], round(c["duration"], 3), c["sourceStart"]) for c in main] == [(0, 3.0, 12.0), (3.0, 6.0, 2.0)]
+    assert all(c["framing"] == "fill" and c["fadeIn"] == 0.03 and c["offsetX"] != 0 for c in main)
+    broll = [c for c in tl["clips"] if c["kind"] == "video" and c not in main]
+    assert [(b["start"], b["duration"], b["sourceStart"], b["muted"]) for b in broll] == [(4.0, 2.0, 1.0, True)]
+    texts = [c for c in tl["clips"] if c["kind"] == "text"]
+    assert {c["track"] for c in texts} == set(tl["tracks"][-2:])  # một lane phụ đề, một lane hook, trên cùng
+    assert [c["text"] for c in texts if c["track"] == tl["tracks"][-1]] == ["Hook"]
 
 
 @pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="cần ffmpeg")

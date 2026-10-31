@@ -51,7 +51,7 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 - `ffmpeg`, `ffprobe`
 - Script trong `examples/` của repo AI-edit-video (đọc `--help` trước khi dùng):
   `transcribe.py`, `plan_cuts.py`, `plan_shorts.py`, `broll.py`, `render_edl.py`,
-  `review_cuts.py`, `shot_log.py`, `translate_srt.py`
+  `edl_to_concat.py`, `review_cuts.py`, `shot_log.py`, `translate_srt.py`
 - Python của venv: `<đường dẫn>\AI-edit-video\examples\.venv\Scripts\python.exe` (Windows)
 - MCP (nếu đã thêm): `concat` để dựng trên timeline Concat; `magnific` để tìm stock hoặc tạo
   video AI. Với Magnific: luôn chạy `simulate_cost` và hỏi tôi trước khi dùng công cụ tốn credit.
@@ -66,6 +66,8 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 ## Concat
 
 - Gọi `concat_version` trước tiên để biết phiên bản và các công cụ có sẵn.
+- Dựng project từ EDL bằng `edl_to_concat.py` (chạy `--dry-run` trước); chỉ dùng công cụ
+  MCP từng bước để soát và sửa nhỏ sau đó.
 - Dựng lane chính (các đoạn của EDL) xong rồi mới thêm phụ đề, chữ và B-roll.
 - Chỉ dùng font đủ dấu tiếng Việt: Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton,
   Bangers, Lobster, Pacifico, Black Ops One. Luôn ghi rõ `fontFamily` khi gọi `title_add`.
