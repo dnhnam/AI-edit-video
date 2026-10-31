@@ -42,6 +42,36 @@ chưa phát hành. Với v0.2.8:
 
 ## 0. Chuẩn bị một lần
 
+### Cách nhanh nhất: để Claude Code trên máy tự cài
+
+Cài Claude Code (`irm https://claude.ai/install.ps1 | iex` trong PowerShell, hoặc dùng tab
+Code của ứng dụng Claude Desktop, chọn **Local**). Tạo một thư mục trống, mở `claude` trong
+đó, rồi dán prompt sau. Các mục 0.1–0.4 bên dưới là những gì prompt này làm, nếu bạn muốn
+tự làm tay.
+
+```text
+Bạn đang chạy trên máy Windows của tôi. Hãy cài bộ công cụ dựng video AI từ repo
+https://github.com/dnhnam/AI-edit-video cho tới khi chạy được. Hỏi tôi trước mỗi lệnh cài đặt.
+1. Kiểm tra Git, ffmpeg, Python 3.12; thiếu thì cài bằng winget (Git.Git, Gyan.FFmpeg,
+   Python.Python.3.12). Báo phiên bản từng thứ.
+2. Clone repo vào %USERPROFILE%\AI-edit-video (đã có thì git pull). Đọc README.md và
+   docs\04-use-case-windows-claude-code.md.
+3. Tạo venv ở examples\.venv, cài requirements.txt, faster-whisper và pytest; chạy
+   python -m pytest tests -q và báo kết quả.
+4. Kiểm tra Concat đã cài chưa (%LOCALAPPDATA%\Programs\Concat\concat.exe hoặc
+   C:\Program Files\Concat\concat.exe). Chưa có thì chỉ chỗ tải, không tự tải file cài đặt.
+5. Tạo thư mục dự án %USERPROFILE%\Videos\du-an-1 gồm raw, work, out, assets; chép
+   templates\CLAUDE.md vào; điền đường dẫn python của venv và thư mục examples vào mục "Công cụ".
+6. Nếu có Concat: thêm MCP concat cho thư mục dự án bằng claude mcp add --scope project.
+7. Nhắc tôi tự đặt ANTHROPIC_API_KEY (và PEXELS_API_KEY nếu cần B-roll) bằng setx.
+   Không yêu cầu tôi dán key vào chat.
+8. Tóm tắt những gì đã sẵn sàng và việc tôi cần làm tiếp.
+```
+
+Sau đó, mỗi lần dựng: chép video vào `raw\`, mở `claude` trong thư mục dự án và giao việc
+bằng các prompt ở các use case bên dưới. Muốn điều khiển phiên này từ điện thoại hoặc trình
+duyệt, gõ `/remote-control` trong phiên.
+
 ### 0.1. Cài phần mềm (PowerShell)
 
 ```powershell
