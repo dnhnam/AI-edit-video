@@ -330,7 +330,7 @@ Repo này dùng lại cùng triết lý "văn bản trước, hình ảnh khi c�
 
 [Concat](https://github.com/jub0t/concat) là phần mềm dựng video mã nguồn mở thay thế
 CapCut, viết bằng Rust, chạy trên Windows, macOS, Linux và Android (giấy phép AGPL-3.0, bản
-beta 0.2.x tại thời điểm viết). Mọi thứ chạy trên máy: phụ đề tự động bằng Whisper, đọc chữ
+beta, bản v0.2.9 ngày 04/11/2026). Mọi thứ chạy trên máy: phụ đề tự động bằng Whisper, đọc chữ
 thành giọng nói, tách nền, keyframe, khoảng 100 hiệu ứng, xuất tối đa 4K (H.264, HEVC, AV1),
 không watermark, không cần tài khoản.
 
@@ -359,8 +359,8 @@ claude mcp add --scope project concat -- "$env:LOCALAPPDATA\Programs\Concat\conc
 | Đọc | `timeline_read` (gọn: lane, clip, id), `project_get` (đầy đủ), `concat_version` |
 | Media | `media_probe`, `media_import` |
 | Dựng | `clip_add`, `clips_add_sequence`, `clip_trim`, `clips_split`, `clips_move`, `clips_remove`, `clip_update`, `clip_transform`, `clip_speed`, `clip_frame`, `track_add` |
-| Hình ảnh | `clip_mask`, `clip_stabilize`, `timeline_background` |
-| Chữ | `title_add`, `captions_add` (danh sách `{start, end, text}`) |
+| Hình ảnh, timeline | `clip_mask`, `clip_stabilize`, `timeline_background`, `timeline_linkage` (từ v0.2.9) |
+| Chữ | `title_add`, `captions_add` (danh sách `{start, end, text}`), `title_style_words` / `title_clear_word_styles` (từ v0.2.9) |
 | Keyframe, hiệu ứng | `keyframe_set`, `keyframe_clear`, `effects_list`, `effect_layer_add`, `effect_key_set` |
 | Khác | `edit_apply` (mọi lệnh dựng, hoặc một batch thành một bước undo), `edit_undo`, `edit_redo`, `template_list`, `template_instantiate` |
 | Xuất | `export_start`, `export_status`, `export_wait`, `export_cancel` |

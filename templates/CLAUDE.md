@@ -71,5 +71,9 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 - Dựng lane chính (các đoạn của EDL) xong rồi mới thêm phụ đề, chữ và B-roll.
 - Chỉ dùng font đủ dấu tiếng Việt: Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton,
   Bangers, Lobster, Pacifico, Black Ops One. Luôn ghi rõ `fontFamily` khi gọi `title_add`.
-- Video `.ts` / `.mpg`: chuyển sang mp4 (`ffmpeg -i in.ts -c copy in.mp4`) trước khi import.
+- Từ v0.2.9: muốn tô màu vài chữ trong phụ đề, dùng `title_style_words`; linkage mặc định bật,
+  nên cắt ripple trên lane chính sẽ kéo phụ đề và B-roll theo.
+- Trên Windows với v0.2.9: không dùng hiệu ứng Chroma Key.
+- Nếu `concat_version` báo v0.2.8: chuyển `.ts` / `.mpg` sang mp4
+  (`ffmpeg -i in.ts -c copy in.mp4`) trước khi import, và không dùng hiệu ứng halation.
 - Xong việc: `project_save` rồi `project_close`, để tôi mở được project trong Concat.

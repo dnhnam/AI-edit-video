@@ -20,23 +20,42 @@ Code bằng tài khoản claude.ai (`claude auth login`, không dùng API key), 
 của phiên về và nạp lại hội thoại. Thư mục phải sạch (không có thay đổi chưa commit). Để dựng
 video, mở một phiên mới trong thư mục dự án video (mục 0.4); repo này chỉ là bộ công cụ.
 
-### Ghi chú phiên bản Concat (kiểm tra ngày 31/10/2026)
+### Ghi chú phiên bản Concat (kiểm tra ngày 08/11/2026)
 
-Bản phát hành mới nhất là **v0.2.8 (18/10/2026)**; nhánh chính đã có thêm khoảng 170 commit
-chưa phát hành. Với v0.2.8:
+Dùng **v0.2.9 (04/11/2026)**. `edl_to_concat.py` chạy được với cả v0.2.8 và v0.2.9: các
+lệnh dựng script dùng không đổi giữa hai bản.
 
-- `title_add` không ghi font sẽ dùng một font không có sẵn (Inspector báo FONT NOT FOUND):
-  luôn ghi rõ `fontFamily`. `captions_add` mặc định đã dùng Hanken Grotesk, đủ dấu tiếng Việt.
-- Font đủ dấu tiếng Việt trong bộ đi kèm: Hanken Grotesk, Inter, Montserrat, Space Grotesk,
-  Anton, Bangers, Lobster, Pacifico, Black Ops One. Nhiều font khác (Bebas Neue, Archivo
-  Black, Permanent Marker, Staatliches...) thiếu chữ ơ, ư, ạ, ắ...
-- File `.ts` / `.mpg` có thể bị trễ tiếng ở đầu đoạn cắt. Chuyển sang mp4 trước khi import:
-  `ffmpeg -i in.ts -c copy in.mp4`.
-- Trên Windows, hiệu ứng "halation" (và thẻ "corona" trong thư viện) có thể lỗi GPU: tránh
-  dùng cho đến bản sau.
-- Chưa có "linkage": cắt kiểu ripple ở lane chính không kéo phụ đề và B-roll theo. Khi
-  dựng, đặt lane chính xong rồi mới thêm phụ đề và B-roll. Bản sau sẽ có `timeline_linkage`
-  (mặc định bật) và `title_style_words` (tô màu, in đậm vài chữ trong phụ đề).
+Những điểm v0.2.9 đã sửa hoặc thêm, có ích cho quy trình này:
+
+- **Linkage** (mặc định bật): cắt kiểu ripple trên lane chính thì phụ đề, chữ, B-roll và âm
+  thanh ở các lane khác dịch theo. Khi duyệt, bạn cắt bớt mà phụ đề không bị lệch. MCP có
+  `timeline_linkage` để tắt/bật.
+- **Tô chữ trong phụ đề:** `title_style_words` đổi màu, độ đậm, cỡ cho vài chữ (kiểu TikTok);
+  chữ còn có kiểu viết hoa (`textCase`), gạch chân, gạch ngang.
+- Đã sửa: trễ tiếng sau điểm cắt với `.ts`/`.mpg`; hiệu ứng halation lỗi GPU trên Windows;
+  `title_add` không ghi font bị dùng font không có sẵn (nay mặc định Hanken Grotesk); phụ đề
+  tự động bắt đầu đúng lúc có lời.
+- Phụ đề tự động (Whisper) cho chọn ngôn ngữ nói và chỉ nghe phần có giọng nói: chọn tiếng Việt.
+- Phím Up/Down nhảy tới điểm cắt trước/sau; cắt nhanh tại vị trí đang phát; khung 4:5 và 3:4.
+- Trên Windows có mục Start menu **"Concat (safe graphics)"** (`concat --software`) khi cửa sổ
+  hiển thị lỗi (ô màu thay cho hình).
+
+Cần biết với v0.2.9:
+
+- **Project lưu bằng v0.2.9 không mở được bằng v0.2.8** (định dạng tài liệu lên bản 2). Nâng
+  cấp mọi máy cùng lúc.
+- Xuất H.264/HEVC giờ dùng bộ mã hoá của máy: trên Windows là NVENC, Quick Sync hoặc AMF theo
+  card đồ hoạ, sau đó tới bộ mã hoá phần mềm của Microsoft (Media Foundation); x264/x265 đã bỏ.
+  Chất lượng và dung lượng file có thể khác bản cũ: xuất thử một tab trước.
+- Hiệu ứng **Chroma Key** trên Windows (Direct3D 12) có thể làm mất thiết bị GPU; đã sửa trên
+  nhánh chính, chờ bản 0.2.10.
+- Font đủ dấu tiếng Việt trong bộ đi kèm vẫn như cũ: Hanken Grotesk, Inter, Montserrat, Space
+  Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One. Bản sau có sẵn kiểu chữ
+  "Vietnamese" (Montserrat 900) trong Text > Languages.
+
+Nếu còn dùng v0.2.8: luôn ghi `fontFamily` khi gọi `title_add`; chuyển `.ts`/`.mpg` sang mp4
+(`ffmpeg -i in.ts -c copy in.mp4`) trước khi dựng; tránh hiệu ứng halation trên Windows; dựng
+lane chính xong mới thêm phụ đề và B-roll (chưa có linkage).
 
 ---
 
@@ -85,7 +104,7 @@ claude --version; ffmpeg -version; py --version
 ```
 
 **Concat** (cho use case 1): tải bản Windows (setup hoặc `.msi`) từ
-[trang chủ](https://concatenate.pages.dev/#download) hoặc
+[trang chủ](https://concat.standalones.org/#download) hoặc
 [GitHub Releases](https://github.com/jub0t/Concat/releases). Bản Windows chưa được ký số: nếu
 SmartScreen chặn, chọn **More info → Run anyway**. Đường dẫn sau khi cài:
 

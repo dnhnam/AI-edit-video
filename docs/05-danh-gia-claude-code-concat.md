@@ -13,8 +13,8 @@ trên Concat rồi xuất video, có khả thi không?
 | Soát khung hình, sửa nhỏ bằng lời | Claude Code qua MCP `concat` (`preview_frame`, `clip_transform`...) |
 | Duyệt, chỉnh tay, xuất | Bạn, trên giao diện Concat |
 
-Đánh giá dựa trên mã nguồn Concat (bản phát hành v0.2.8 ngày 18/10/2026 và nhánh chính
-đến 28/10/2026). Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
+Đánh giá dựa trên mã nguồn Concat: bản phát hành v0.2.8 (18/10/2026), v0.2.9 (04/11/2026)
+và nhánh chính đến 08/11/2026. Các lệnh dựng mà `edl_to_concat.py` dùng giống nhau ở v0.2.8 và v0.2.9. Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
 "Mức độ kiểm chứng" ở cuối.
 
 ---
@@ -76,17 +76,19 @@ Kết quả: thư mục `shorts\podcast_shorts`. Mở trong Concat, mỗi short 
 |---|---|---|
 | Project đang mở trên Concat thì agent không ghi được; chưa có "live mode" | Mỗi vòng nhờ Claude sửa phải đóng rồi mở lại project | Gom yêu cầu sửa vào `review.md`, để Claude làm một lượt |
 | Nhiều font đi kèm thiếu dấu tiếng Việt (Bebas Neue, Archivo Black, Permanent Marker, Staatliches...) | Chữ bị lẫn font hệ thống | Dùng Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One |
-| v0.2.8: `title_add` không ghi font sẽ dùng font không có sẵn | Báo FONT NOT FOUND | Luôn ghi `fontFamily` (script đã làm) |
-| v0.2.8: chưa có linkage | Cắt ripple ở lane chính không kéo phụ đề, B-roll theo | Script dựng lane chính trước; khi tự cắt trong giao diện, chọn cả các lane liên quan |
-| v0.2.8: file `.ts`/`.mpg` có thể trễ tiếng sau điểm cắt | Lệch tiếng | `ffmpeg -i in.ts -c copy in.mp4` trước khi dựng |
-| v0.2.8 trên Windows: hiệu ứng halation lỗi GPU | Lỗi khi dùng hiệu ứng đó | Tránh dùng cho tới bản sau |
+| Project lưu bằng v0.2.9 không mở được bằng v0.2.8 | Máy cài bản cũ không mở được project | Nâng cấp mọi máy lên v0.2.9 |
+| v0.2.9 trên Windows: Chroma Key có thể làm mất thiết bị GPU | Lỗi khi dùng hiệu ứng đó | Tránh dùng cho tới bản 0.2.10 |
+| v0.2.9 bỏ x264/x265, xuất bằng bộ mã hoá của hệ điều hành | Chất lượng, dung lượng file khác bản cũ | Xuất thử một tab, chỉnh `crf` nếu cần |
+| Chỉ còn ở v0.2.8: `title_add` thiếu font, chưa có linkage, trễ tiếng với `.ts`/`.mpg`, halation lỗi trên Windows | — | Nâng cấp v0.2.9 (script vẫn ghi rõ font và dựng lane chính trước, nên chạy được cả bản cũ) |
 | Mỗi lệnh sửa qua MCP trả về toàn bộ timeline đang mở | Claude Code tốn token khi timeline có hàng trăm dòng phụ đề | Dựng bằng script; Claude Code chỉ sửa nhỏ |
 | Concat còn beta, API đổi nhanh | Script có thể cần chỉnh theo phiên bản | Gọi `concat_version` trước; báo lỗi để cập nhật script |
 | Chỉ ghi file trong thư mục người dùng; mỗi lúc xuất một video | — | Đặt dự án trong `C:\Users\<bạn>\...`; xuất lần lượt từng tab |
 
-Bản đang phát triển của Concat (chưa phát hành) đã thêm `timeline_linkage` (phụ đề, B-roll
-dịch theo khi cắt lane chính), `title_style_words` (tô màu vài chữ trong phụ đề), phím Up/Down
-nhảy tới điểm cắt, và sửa các lỗi ở bảng trên.
+Từ v0.2.9, **linkage** mặc định bật: khi bạn cắt kiểu ripple trên lane chính lúc duyệt, phụ
+đề, hook và B-roll dịch theo. Đây là cải thiện lớn nhất cho bước duyệt. v0.2.9 cũng thêm
+`title_style_words` (tô màu vài chữ trong phụ đề) và phím Up/Down nhảy tới điểm cắt. Nhánh chính
+(bản 0.2.10 sắp ra) thêm tách giọng nói khỏi tạp âm/nhạc ngay trong Concat, kiểu chữ
+"Vietnamese" có sẵn, và `concat --schema` in toàn bộ hợp đồng API dạng JSON Schema.
 
 ---
 
@@ -105,7 +107,7 @@ nhảy tới điểm cắt, và sửa các lỗi ở bảng trên.
 ## 5. Mức độ kiểm chứng
 
 - **Đã kiểm chứng:** tên công cụ, tên lệnh và tên trường JSON đối chiếu trực tiếp với mã
-  nguồn v0.2.8; toàn bộ luồng của `edl_to_concat.py` chạy với một server MCP giả lập mô phỏng
+  nguồn v0.2.8 và v0.2.9; toàn bộ luồng của `edl_to_concat.py` chạy với một server MCP giả lập mô phỏng
   các quy tắc cắt ripple, lane và chữ của Concat (`tests/fake_concat_mcp.py`, có test tự động).
 - **Chưa kiểm chứng:** chạy với Concat thật. Lần chạy đầu trên máy của bạn:
   1. `--dry-run` để xem kế hoạch;

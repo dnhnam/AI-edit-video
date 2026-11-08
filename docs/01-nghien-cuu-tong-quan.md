@@ -67,7 +67,8 @@ Một số mốc đáng chú ý:
   sắp xếp media, dựng highlight từ video dài, bỏ clip thừa và render hàng loạt bằng lệnh tự
   nhiên. Tính năng này chỉ có ở bản Studio, thiết lập qua *File > Setup AI Assistants*.
 - **10/2026:** [Concat](https://github.com/jub0t/concat), phần mềm dựng mã nguồn mở thay CapCut,
-  đang ở bản beta 0.2.x, có MCP server tích hợp để Claude Code điều khiển.
+  đang ở bản beta 0.2.x, có MCP server tích hợp để Claude Code điều khiển; v0.2.9 (04/11) thêm
+  linkage giữa các lane và tô màu từng chữ trong phụ đề.
 
 ---
 

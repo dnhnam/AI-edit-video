@@ -17,7 +17,7 @@ Mỗi tab gồm: các đoạn của EDL nối liền trên lane chính (fade âm
 khớp timeline mới (nếu EDL có transcript), chữ hook (--hook), B-roll trên lane riêng
 (nếu EDL có mục "broll"). Sau khi dựng, script đọc lại timeline để kiểm tra từng đoạn.
 
-Viết cho Concat v0.2.8. Đường dẫn Concat: --concat, biến CONCAT_EXE, hoặc chỗ cài mặc định.
+Viết cho Concat v0.2.8 và v0.2.9 (các lệnh dựng dùng ở đây giống nhau). Đường dẫn Concat: --concat, biến CONCAT_EXE, hoặc chỗ cài mặc định.
 Concat chỉ ghi file trong thư mục người dùng (đặt CONCAT_MCP_ROOTS để mở rộng).
 """
 from __future__ import annotations
