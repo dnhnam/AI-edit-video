@@ -20,12 +20,29 @@ Code bằng tài khoản claude.ai (`claude auth login`, không dùng API key), 
 của phiên về và nạp lại hội thoại. Thư mục phải sạch (không có thay đổi chưa commit). Để dựng
 video, mở một phiên mới trong thư mục dự án video (mục 0.4); repo này chỉ là bộ công cụ.
 
-### Ghi chú phiên bản Concat (kiểm tra ngày 08/11/2026)
+### Ghi chú phiên bản Concat (kiểm tra ngày 13/11/2026)
 
-Dùng **v0.2.9 (04/11/2026)**. `edl_to_concat.py` chạy được với cả v0.2.8 và v0.2.9: các
-lệnh dựng script dùng không đổi giữa hai bản.
+**Bản nào tải được:** chỉ những bản đã công bố trên
+[GitHub Releases](https://github.com/jub0t/Concat/releases) hoặc trang tải. Concat build bản cài
+khi người duy trì đặt tag phiên bản, nhưng bản cài được tạo ở dạng **nháp** và chỉ xuất hiện khi
+có người duyệt và bấm công bố. Vì vậy có tag trong mã nguồn chưa có nghĩa là tải được.
 
-Những điểm v0.2.9 đã sửa hoặc thêm, có ích cho quy trình này:
+- Tag mới nhất: **v0.2.11** (12/11/2026), **chưa công bố** tại thời điểm kiểm tra.
+- v0.2.10 (10/11/2026): lần build bản Mac bị quá giờ; có thể chưa được công bố.
+- Hãy dùng bản mới nhất có trên trang Releases (ít nhất v0.2.9).
+
+`edl_to_concat.py` chạy được với v0.2.8 đến v0.2.11: các lệnh dựng script dùng không đổi.
+
+**Có trong v0.2.11** (khi được công bố): màn xem trước không còn đen khi GPU lỗi, mà lùi xuống vẽ
+bằng CPU (chậm hơn, không có hiệu ứng); hết khung đen ở điểm cắt khi hai clip nối nhau lệch lưới
+khung hình (#756). Lỗi khung đen này chạm trực tiếp tới project do `edl_to_concat.py` tạo, vì vậy
+nên nâng cấp ngay khi có. Chi tiết về lỗi black preview: [Phần 6](06-so-sanh-concat-pireel-absentmotion.md#4-lỗi-black-preview-của-concat).
+
+**Có từ v0.2.10:** sửa lỗi Chroma Key làm mất thiết bị GPU trên Windows; kiểu chữ "Vietnamese"
+(Montserrat 900) trong Text > Languages; tách giọng nói khỏi tạp âm hoặc nhạc; `concat --schema`
+in toàn bộ API dạng JSON Schema.
+
+**Có từ v0.2.9:**
 
 - **Linkage** (mặc định bật): cắt kiểu ripple trên lane chính thì phụ đề, chữ, B-roll và âm
   thanh ở các lane khác dịch theo. Khi duyệt, bạn cắt bớt mà phụ đề không bị lệch. MCP có
@@ -40,18 +57,17 @@ Những điểm v0.2.9 đã sửa hoặc thêm, có ích cho quy trình này:
 - Trên Windows có mục Start menu **"Concat (safe graphics)"** (`concat --software`) khi cửa sổ
   hiển thị lỗi (ô màu thay cho hình).
 
-Cần biết với v0.2.9:
+Cần biết từ v0.2.9:
 
 - **Project lưu bằng v0.2.9 không mở được bằng v0.2.8** (định dạng tài liệu lên bản 2). Nâng
   cấp mọi máy cùng lúc.
 - Xuất H.264/HEVC giờ dùng bộ mã hoá của máy: trên Windows là NVENC, Quick Sync hoặc AMF theo
   card đồ hoạ, sau đó tới bộ mã hoá phần mềm của Microsoft (Media Foundation); x264/x265 đã bỏ.
   Chất lượng và dung lượng file có thể khác bản cũ: xuất thử một tab trước.
-- Hiệu ứng **Chroma Key** trên Windows (Direct3D 12) có thể làm mất thiết bị GPU; đã sửa trên
-  nhánh chính, chờ bản 0.2.10.
+- Nếu vẫn ở v0.2.9: không dùng hiệu ứng **Chroma Key** trên Windows (có thể làm mất thiết bị
+  GPU); nếu màn xem trước đen, mở "Concat (safe graphics)" từ Start menu.
 - Font đủ dấu tiếng Việt trong bộ đi kèm vẫn như cũ: Hanken Grotesk, Inter, Montserrat, Space
-  Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One. Bản sau có sẵn kiểu chữ
-  "Vietnamese" (Montserrat 900) trong Text > Languages.
+  Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One.
 
 Nếu còn dùng v0.2.8: luôn ghi `fontFamily` khi gọi `title_add`; chuyển `.ts`/`.mpg` sang mp4
 (`ffmpeg -i in.ts -c copy in.mp4`) trước khi dựng; tránh hiệu ứng halation trên Windows; dựng

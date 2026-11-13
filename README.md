@@ -32,6 +32,7 @@ cách áp dụng hiệu quả, kèm ví dụ thực hành và mã nguồn chạy
 | [Phần 3 — Ví dụ với Claude](docs/03-vi-du-voi-claude.md) | 10 ví dụ: claude.ai, Claude Code + ffmpeg, pipeline API, shot log bằng thị giác, Remotion, MCP cho DaVinci Resolve / Premiere / Adobe, video-use, Concat; bảng prompt kém và prompt tốt |
 | [Phần 4 — Use case trên Windows với Claude Code](docs/04-use-case-windows-claude-code.md) | Cài đặt trên Windows; 4 use case: dựng với Concat, dựng video short, video dài ra nhiều short, B-roll từ Pexels hoặc Magnific |
 | [Phần 5 — Đánh giá Claude Code + Concat](docs/05-danh-gia-claude-code-concat.md) | Video dài → project Concat nhiều tab → người duyệt và xuất: khả năng, căn cứ, hạn chế, cách kiểm chứng |
+| [Phần 6 — So sánh Concat, pireel, AbsentMotion](docs/06-so-sanh-concat-pireel-absentmotion.md) | Thế mạnh của từng phần mềm, cái nào hợp quy trình AI dựng; lỗi black preview của Concat |
 | [`examples/`](examples) | Mã Python: chép lời → Claude lập EDL hoặc chọn nhiều short → Claude chọn B-roll → render ffmpeg (16:9 hoặc 9:16) hoặc dựng project Concat (`edl_to_concat.py`) → Claude soát điểm cắt → dịch phụ đề → shot log |
 | [`templates/CLAUDE.md`](templates/CLAUDE.md) | Mẫu luật làm việc cho Claude Code trong một dự án video |
 | [`templates/brief.md`](templates/brief.md) | Mẫu brief dựng video, kèm ví dụ brief kém và brief tốt |

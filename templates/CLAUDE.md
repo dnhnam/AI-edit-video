@@ -74,6 +74,8 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 - Từ v0.2.9: muốn tô màu vài chữ trong phụ đề, dùng `title_style_words`; linkage mặc định bật,
   nên cắt ripple trên lane chính sẽ kéo phụ đề và B-roll theo.
 - Trên Windows với v0.2.9: không dùng hiệu ứng Chroma Key.
+- Nếu `preview_frame` báo lỗi vì phải vẽ bằng CPU (v0.2.11 khi GPU hỏng), báo tôi và để tôi soát
+  bằng mắt; đừng thử lại liên tục.
 - Nếu `concat_version` báo v0.2.8: chuyển `.ts` / `.mpg` sang mp4
   (`ffmpeg -i in.ts -c copy in.mp4`) trước khi import, và không dùng hiệu ứng halation.
 - Xong việc: `project_save` rồi `project_close`, để tôi mở được project trong Concat.

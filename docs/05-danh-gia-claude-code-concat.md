@@ -13,8 +13,8 @@ trên Concat rồi xuất video, có khả thi không?
 | Soát khung hình, sửa nhỏ bằng lời | Claude Code qua MCP `concat` (`preview_frame`, `clip_transform`...) |
 | Duyệt, chỉnh tay, xuất | Bạn, trên giao diện Concat |
 
-Đánh giá dựa trên mã nguồn Concat: bản phát hành v0.2.8 (18/10/2026), v0.2.9 (04/11/2026)
-và nhánh chính đến 08/11/2026. Các lệnh dựng mà `edl_to_concat.py` dùng giống nhau ở v0.2.8 và v0.2.9. Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
+Đánh giá dựa trên mã nguồn Concat: v0.2.8 (18/10/2026), v0.2.9 (04/11/2026), các tag v0.2.10 và
+v0.2.11 (chưa chắc đã được công bố bản cài) và nhánh chính đến 12/11/2026. Các lệnh dựng mà `edl_to_concat.py` dùng giống nhau từ v0.2.8 tới v0.2.11. Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
 "Mức độ kiểm chứng" ở cuối.
 
 ---
@@ -77,7 +77,10 @@ Kết quả: thư mục `shorts\podcast_shorts`. Mở trong Concat, mỗi short 
 | Project đang mở trên Concat thì agent không ghi được; chưa có "live mode" | Mỗi vòng nhờ Claude sửa phải đóng rồi mở lại project | Gom yêu cầu sửa vào `review.md`, để Claude làm một lượt |
 | Nhiều font đi kèm thiếu dấu tiếng Việt (Bebas Neue, Archivo Black, Permanent Marker, Staatliches...) | Chữ bị lẫn font hệ thống | Dùng Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One |
 | Project lưu bằng v0.2.9 không mở được bằng v0.2.8 | Máy cài bản cũ không mở được project | Nâng cấp mọi máy lên v0.2.9 |
-| v0.2.9 trên Windows: Chroma Key có thể làm mất thiết bị GPU | Lỗi khi dùng hiệu ứng đó | Tránh dùng cho tới bản 0.2.10 |
+| Đến v0.2.10: GPU lỗi trên Direct3D 12 làm màn xem trước đen | Không xem được khi duyệt | Mở "Concat (safe graphics)"; v0.2.11 tự lùi xuống vẽ bằng CPU (không hiệu ứng) |
+| Đến v0.2.10: hai clip nối lệch lưới khung hình có thể sinh khung đen ở điểm cắt | Chớp đen trên preview và file xuất | Nâng cấp v0.2.11 khi được công bố; phát kiểm tra các điểm cắt trước khi xuất |
+| v0.2.9 trên Windows: Chroma Key có thể làm mất thiết bị GPU | Lỗi khi dùng hiệu ứng đó | Tránh dùng; đã sửa từ v0.2.10 |
+| `preview_frame` báo lỗi khi Concat phải vẽ bằng CPU (v0.2.11) | Claude không soát được khung hình | Kiểm tra driver GPU; soát bằng mắt trong Concat |
 | v0.2.9 bỏ x264/x265, xuất bằng bộ mã hoá của hệ điều hành | Chất lượng, dung lượng file khác bản cũ | Xuất thử một tab, chỉnh `crf` nếu cần |
 | Chỉ còn ở v0.2.8: `title_add` thiếu font, chưa có linkage, trễ tiếng với `.ts`/`.mpg`, halation lỗi trên Windows | — | Nâng cấp v0.2.9 (script vẫn ghi rõ font và dựng lane chính trước, nên chạy được cả bản cũ) |
 | Mỗi lệnh sửa qua MCP trả về toàn bộ timeline đang mở | Claude Code tốn token khi timeline có hàng trăm dòng phụ đề | Dựng bằng script; Claude Code chỉ sửa nhỏ |
@@ -86,8 +89,7 @@ Kết quả: thư mục `shorts\podcast_shorts`. Mở trong Concat, mỗi short 
 
 Từ v0.2.9, **linkage** mặc định bật: khi bạn cắt kiểu ripple trên lane chính lúc duyệt, phụ
 đề, hook và B-roll dịch theo. Đây là cải thiện lớn nhất cho bước duyệt. v0.2.9 cũng thêm
-`title_style_words` (tô màu vài chữ trong phụ đề) và phím Up/Down nhảy tới điểm cắt. Nhánh chính
-(bản 0.2.10 sắp ra) thêm tách giọng nói khỏi tạp âm/nhạc ngay trong Concat, kiểu chữ
+`title_style_words` (tô màu vài chữ trong phụ đề) và phím Up/Down nhảy tới điểm cắt. Từ v0.2.10 có tách giọng nói khỏi tạp âm/nhạc ngay trong Concat, kiểu chữ
 "Vietnamese" có sẵn, và `concat --schema` in toàn bộ hợp đồng API dạng JSON Schema.
 
 ---
