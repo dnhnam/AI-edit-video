@@ -70,7 +70,7 @@ Một số mốc đáng chú ý:
   nhiên. Tính năng này chỉ có ở bản Studio, thiết lập qua *File > Setup AI Assistants*.
 - **10/2026:** [Concat](https://github.com/jub0t/concat), phần mềm dựng mã nguồn mở thay CapCut,
   đang ở bản beta 0.2.x, có MCP server tích hợp để Claude Code điều khiển; v0.2.9 (04/11) thêm
-  linkage giữa các lane và tô màu từng chữ trong phụ đề.
+  linkage giữa các lane và tô màu từng chữ trong phụ đề; v0.2.11 (12/11) hết màn xem trước đen khi GPU lỗi.
 
 ---
 

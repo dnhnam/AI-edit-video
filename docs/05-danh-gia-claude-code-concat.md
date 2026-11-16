@@ -13,8 +13,8 @@ trên Concat rồi xuất video, có khả thi không?
 | Soát khung hình, sửa nhỏ bằng lời | Claude Code qua MCP `concat` (`preview_frame`, `clip_transform`...) |
 | Duyệt, chỉnh tay, xuất | Bạn, trên giao diện Concat |
 
-Đánh giá dựa trên mã nguồn Concat: v0.2.8 (18/10/2026), v0.2.9 (04/11/2026), các tag v0.2.10 và
-v0.2.11 (chưa chắc đã được công bố bản cài) và nhánh chính đến 12/11/2026. Các lệnh dựng mà `edl_to_concat.py` dùng giống nhau từ v0.2.8 tới v0.2.11. Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
+Đánh giá dựa trên mã nguồn Concat: v0.2.8 (18/10/2026), v0.2.9 (04/11/2026), v0.2.10, v0.2.11 (bản cài
+đã có) và nhánh chính đến 16/11/2026. Các lệnh dựng mà `edl_to_concat.py` dùng giống nhau từ v0.2.8 tới v0.2.11. Chưa chạy được Concat thật trong môi trường đã viết tài liệu này; xem mục
 "Mức độ kiểm chứng" ở cuối.
 
 ---
@@ -78,7 +78,9 @@ Kết quả: thư mục `shorts\podcast_shorts`. Mở trong Concat, mỗi short 
 | Nhiều font đi kèm thiếu dấu tiếng Việt (Bebas Neue, Archivo Black, Permanent Marker, Staatliches...) | Chữ bị lẫn font hệ thống | Dùng Hanken Grotesk, Inter, Montserrat, Space Grotesk, Anton, Bangers, Lobster, Pacifico, Black Ops One |
 | Project lưu bằng v0.2.9 không mở được bằng v0.2.8 | Máy cài bản cũ không mở được project | Nâng cấp mọi máy lên v0.2.9 |
 | Đến v0.2.10: GPU lỗi trên Direct3D 12 làm màn xem trước đen | Không xem được khi duyệt | Mở "Concat (safe graphics)"; v0.2.11 tự lùi xuống vẽ bằng CPU (không hiệu ứng) |
-| Đến v0.2.10: hai clip nối lệch lưới khung hình có thể sinh khung đen ở điểm cắt | Chớp đen trên preview và file xuất | Nâng cấp v0.2.11 khi được công bố; phát kiểm tra các điểm cắt trước khi xuất |
+| Đến v0.2.10: hai clip nối lệch lưới khung hình có thể sinh khung đen ở điểm cắt | Chớp đen trên preview và file xuất | Nâng cấp v0.2.11; vẫn nên phát kiểm tra các điểm cắt trước khi xuất |
+| v0.2.11 trên máy dùng dấu phẩy thập phân: clip đổi tốc độ có thể không hiện hình (#762) | Chủ yếu khi chỉnh tốc độ lúc duyệt | Tạm đổi định dạng số Windows sang dấu chấm, hoặc chờ bản sau (đã sửa trên nhánh chính) |
+| v0.2.10–0.2.11: phụ đề tự động của Concat có thể bỏ sót lời (#763) | Chỉ khi dùng nút tạo phụ đề trong Concat | Dùng phụ đề từ `transcribe.py` (script đã làm) |
 | v0.2.9 trên Windows: Chroma Key có thể làm mất thiết bị GPU | Lỗi khi dùng hiệu ứng đó | Tránh dùng; đã sửa từ v0.2.10 |
 | `preview_frame` báo lỗi khi Concat phải vẽ bằng CPU (v0.2.11) | Claude không soát được khung hình | Kiểm tra driver GPU; soát bằng mắt trong Concat |
 | v0.2.9 bỏ x264/x265, xuất bằng bộ mã hoá của hệ điều hành | Chất lượng, dung lượng file khác bản cũ | Xuất thử một tab, chỉnh `crf` nếu cần |

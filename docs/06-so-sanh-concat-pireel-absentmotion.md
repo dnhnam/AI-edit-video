@@ -71,5 +71,5 @@ video 4K dài sẽ nặng.
 - **Với Claude Code:** khi Concat phải vẽ bằng CPU và bỏ hiệu ứng, `preview_frame` qua MCP **báo
   lỗi** thay vì trả về ảnh thiếu hiệu ứng. Gặp lỗi đó ở bước soát khung hình là dấu hiệu GPU có
   vấn đề.
-- **Trong lúc chưa có v0.2.11:** dùng mục Start menu "Concat (safe graphics)" (`concat --software`,
+- **Nếu còn ở bản cũ hơn v0.2.11:** nâng cấp (v0.2.11 đã có trên trang Releases), hoặc dùng mục Start menu "Concat (safe graphics)" (`concat --software`,
   có từ v0.2.9) để vẽ cửa sổ bằng CPU.

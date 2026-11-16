@@ -20,23 +20,36 @@ Code bằng tài khoản claude.ai (`claude auth login`, không dùng API key), 
 của phiên về và nạp lại hội thoại. Thư mục phải sạch (không có thay đổi chưa commit). Để dựng
 video, mở một phiên mới trong thư mục dự án video (mục 0.4); repo này chỉ là bộ công cụ.
 
-### Ghi chú phiên bản Concat (kiểm tra ngày 13/11/2026)
+### Ghi chú phiên bản Concat (kiểm tra ngày 16/11/2026)
 
-**Bản nào tải được:** chỉ những bản đã công bố trên
-[GitHub Releases](https://github.com/jub0t/Concat/releases) hoặc trang tải. Concat build bản cài
-khi người duy trì đặt tag phiên bản, nhưng bản cài được tạo ở dạng **nháp** và chỉ xuất hiện khi
-có người duyệt và bấm công bố. Vì vậy có tag trong mã nguồn chưa có nghĩa là tải được.
+Dùng **v0.2.11** (tag ngày 12/11/2026, bản cài đã có trên
+[GitHub Releases](https://github.com/jub0t/Concat/releases)). `edl_to_concat.py` chạy được với
+v0.2.8 đến v0.2.11: các lệnh dựng script dùng không đổi.
 
-- Tag mới nhất: **v0.2.11** (12/11/2026), **chưa công bố** tại thời điểm kiểm tra.
-- v0.2.10 (10/11/2026): lần build bản Mac bị quá giờ; có thể chưa được công bố.
-- Hãy dùng bản mới nhất có trên trang Releases (ít nhất v0.2.9).
+Lưu ý chung: Concat build bản cài khi đặt tag phiên bản, nhưng bản cài chỉ xuất hiện trên trang
+tải sau khi người duy trì duyệt và công bố. Thấy tag mới trong mã nguồn chưa có nghĩa là tải được.
 
-`edl_to_concat.py` chạy được với v0.2.8 đến v0.2.11: các lệnh dựng script dùng không đổi.
+**Có từ v0.2.11:**
 
-**Có trong v0.2.11** (khi được công bố): màn xem trước không còn đen khi GPU lỗi, mà lùi xuống vẽ
-bằng CPU (chậm hơn, không có hiệu ứng); hết khung đen ở điểm cắt khi hai clip nối nhau lệch lưới
-khung hình (#756). Lỗi khung đen này chạm trực tiếp tới project do `edl_to_concat.py` tạo, vì vậy
-nên nâng cấp ngay khi có. Chi tiết về lỗi black preview: [Phần 6](06-so-sanh-concat-pireel-absentmotion.md#4-lỗi-black-preview-của-concat).
+- **Hết màn xem trước đen khi GPU lỗi:** Concat lùi dần xuống vẽ bằng CPU (chậm hơn, không có
+  hiệu ứng) và báo một lần trên màn hình. Lỗi GPU gốc chưa hết. Chi tiết:
+  [Phần 6](06-so-sanh-concat-pireel-absentmotion.md#4-lỗi-black-preview-của-concat).
+- **Hết khung đen ở điểm cắt** khi hai clip nối nhau lệch lưới khung hình, trên cả preview và
+  file xuất (#756). Lỗi này chạm trực tiếp tới project do `edl_to_concat.py` tạo.
+- **Mask mới:** MCP đổi `clip_mask` thành `clip_masks` (nhiều mask chồng nhau, kiểu cộng, trừ, giao)
+  và thêm `mask_key_set` để tạo keyframe cho mask.
+- Log ghi rõ lý do khi GPU mất thiết bị và tiến trình từng lần xuất, dễ gửi kèm khi báo lỗi.
+
+**Lỗi còn trong v0.2.11, đã sửa trên nhánh chính (chờ bản sau):**
+
+- **Máy dùng dấu phẩy thập phân** (thiết lập vùng tiếng Việt trên Windows thường như vậy): nếu
+  một thành phần nào đó trong máy đổi định dạng số của Concat, clip có tốc độ khác 1x có thể
+  không hiện hình, và các hiệu ứng có giá trị lẻ bị từ chối (#762). Gặp hiện tượng này thì tạm đổi
+  định dạng số của Windows sang dấu chấm (Settings > Time & language > Region > Regional format),
+  hoặc chờ bản sau.
+- **Phụ đề tự động của Concat có thể bỏ sót lời** với đoạn nói liền mạch, vì bộ phát hiện giọng nói
+  cắt nhầm (#763; một ví dụ trong issue chỉ chép được 9,6 trên 92 giây). Kiểm tra phụ đề phủ hết
+  video. Phụ đề từ `transcribe.py` + `edl_to_concat.py` không bị ảnh hưởng.
 
 **Có từ v0.2.10:** sửa lỗi Chroma Key làm mất thiết bị GPU trên Windows; kiểu chữ "Vietnamese"
 (Montserrat 900) trong Text > Languages; tách giọng nói khỏi tạp âm hoặc nhạc; `concat --schema`

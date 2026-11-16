@@ -74,6 +74,9 @@ project.md  nhật ký: quyết định đã chốt, phản hồi của tôi, vi
 - Từ v0.2.9: muốn tô màu vài chữ trong phụ đề, dùng `title_style_words`; linkage mặc định bật,
   nên cắt ripple trên lane chính sẽ kéo phụ đề và B-roll theo.
 - Trên Windows với v0.2.9: không dùng hiệu ứng Chroma Key.
+- Từ v0.2.11, công cụ mask là `clip_masks` (không còn `clip_mask`).
+- v0.2.11: nếu clip đổi tốc độ không hiện hình, báo tôi kiểm tra định dạng số của Windows (#762);
+  phụ đề tạo bằng nút trong Concat có thể thiếu lời (#763), nên dùng phụ đề từ `transcribe.py`.
 - Nếu `preview_frame` báo lỗi vì phải vẽ bằng CPU (v0.2.11 khi GPU hỏng), báo tôi và để tôi soát
   bằng mắt; đừng thử lại liên tục.
 - Nếu `concat_version` báo v0.2.8: chuyển `.ts` / `.mpg` sang mp4
